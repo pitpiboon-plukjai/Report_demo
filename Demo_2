@@ -1,0 +1,208 @@
+import pandas as pd
+
+
+# shp_df1 = pd.read_excel(shp_file, 'DATA1')
+# shp_df2 = pd.read_excel(shp_file, 'DATA2')
+
+# shp_file = 'SHOPEE 5 NOV.xlsx'
+# mrk_file = 'Mirakl 5 NOV.xlsx'
+# print(df)
+
+# mrk_df1 = pd.read_excel(mrk_file, 'orders')
+# mrk_col1 = mrk_df1.loc[:, ('Date created', 'Order number', 'Quantity','Status','Amount','Store SKU','Unit price','Customer Paid Price')]
+# mrk_sp1 = mrk_df1[['Date created', 'Order number', 'Quantity','Status','Amount','Store SKU','Unit price','Customer Paid Price']]
+
+
+def SHOPEE():
+
+    shp_file = 'SHOPEE 5 NOV.xlsx'
+
+    shp_df1 = pd.read_excel(shp_file, 'DATA1')
+    shp_df2 = pd.read_excel(shp_file, 'DATA2')
+
+    shp_col1 = shp_df1.loc[:, ('หมายเลขคำสั่งซื้อ', 'สถานะการสั่งซื้อ', 'วันที่ทำการสั่งซื้อ',
+                               'คำสั่งซื้อที่ดำเนินการโดย Shopee',
+                               'เลขอ้างอิง SKU (SKU Reference No.)', 'ราคาตั้งต้น', 'ราคาขาย', 'จำนวน',
+                               'ราคาขายสุทธิ', 'จำนวนเงินทั้งหมด')]
+
+    shp_col2 = shp_df1.loc[:, ('หมายเลขคำสั่งซื้อ', 'สถานะการสั่งซื้อ', 'วันที่ทำการสั่งซื้อ',
+                               'เลขอ้างอิง SKU (SKU Reference No.)', 'ราคาตั้งต้น', 'ราคาขาย', 'จำนวน',
+                               'ราคาขายสุทธิ', 'จำนวนเงินทั้งหมด')]
+
+    # shp_col2 = shp_df2.drop(['เหตุผลในการยกเลิกคำสั่งซื้อ', 'สถานะการคืนเงินหรือคืนสินค้า', 'ชื่อผู้ใช้ (ผู้ซื้อ)',
+    #                   'เวลาการชำระสินค้า', 'ช่องทางการชำระเงิน', 'ตัวเลือกการจัดส่ง',
+    #                   'วิธีการจัดส่ง', '*หมายเลขติดตามพัสดุ',
+    #                   'วันที่คาดว่าจะทำการจัดส่งสินค้า', 'เวลาส่งสินค้า',
+    #                   'เลขอ้างอิง Parent SKU', 'ชื่อสินค้า', 'ชื่อตัวเลือก', 'ส่วนลดจาก Shopee',
+    #                   'โค้ดส่วนลดชำระโดยผู้ขาย', 'โค้ด Coins Cashback',
+    #                   'โค้ดส่วนลดชำระโดย Shopee', 'โค้ดส่วนลด',
+    #                   'เข้าร่วมแคมเปญ bundle deal หรือไม่',
+    #                   'ส่วนลด bundle deal ชำระโดยผู้ขาย', 'ส่วนลด bundle deal ชำระโดย Shopee',
+    #                   'ส่วนลดจากการใช้เหรียญ', 'ส่วนลดทั้งหมดจากบัตรเครดิต', 'ค่าคอมมิชชั่น',
+    #                   'Transaction Fee', 'ต้นทุนขายหักคูปองและcoin',
+    #                   'ค่าจัดส่งที่ชำระโดยผู้ซื้อ', 'ค่าจัดส่งที่ Shopee ออกให้โดยประมาณ',
+    #                   'ค่าจัดส่งสินค้าคืน', 'ค่าบริการ', 'ค่าจัดส่งโดยประมาณ', 'ชื่อผู้รับ',
+    #                   'หมายเลขโทรศัพท์', 'หมายเหตุจากผู้ซื้อ', 'ที่อยู่ในการจัดส่ง', 'ประเทศ',
+    #                   'จังหวัด', 'เขต/อำเภอ', 'รหัสไปรษณีย์', 'ประเภทคำสั่งซื้อ',
+    #                   'เวลาที่ทำการสั่งซื้อสำเร็จ', 'บันทึก'
+    #
+    #                   ], axis=1, inplace=True)
+
+
+    # shp_df1.drop(
+    #     ['เหตุผลในการยกเลิกคำสั่งซื้อ', 'สถานะการคืนเงินหรือคืนสินค้า', 'เวลาการชำระสินค้า', 'ช่องทางการชำระเงิน',
+    #      'ตัวเลือกการจัดส่ง', 'วิธีการจัดส่ง', '*หมายเลขติดตามพัสดุ', 'วันที่คาดว่าจะทำการจัดส่งสินค้า',
+    #      'เวลาส่งสินค้า', 'วันที่จัดส่งสำเร็จ', 'วันที่เงินเข้า Seller Balance', 'เวลาที่ทำการสั่งซื้อสำเร็จ',
+    #      'วันที่คำสั่งซื้อถูกยกเลิก',
+    #      'เลขอ้างอิง Parent SKU', 'ชื่อสินค้า', 'ชื่อตัวเลือก', 'ส่วนลดจาก Shopee', 'โค้ดส่วนลดชำระโดยผู้ขาย',
+    #      'โค้ด Coins Cashback', 'โค้ดส่วนลดชำระโดย Shopee',
+    #      'โค้ดส่วนลด', 'เข้าร่วมแคมเปญ bundle deal หรือไม่', 'ส่วนลด bundle deal ชำระโดยผู้ขาย',
+    #      'ส่วนลด bundle deal ชำระโดย Shopee', 'ส่วนลดจากการใช้เหรียญ', 'ส่วนลดทั้งหมดจากบัตรเครดิต',
+    #      'ค่าคอมมิชชั่น', 'Transaction Fee', 'ต้นทุนขายหักคูปองและcoin', 'ค่าจัดส่งที่ชำระโดยผู้ซื้อ',
+    #      'ค่าจัดส่งสินค้าคืน', 'ค่าบริการ',
+    #      'ค่าจัดส่งโดยประมาณ', 'ชื่อผู้ใช้ (ผู้ซื้อ)', 'ชื่อผู้รับ', 'หมายเลขโทรศัพท์', 'หมายเหตุจากผู้ซื้อ',
+    #      'ที่อยู่ในการจัดส่ง', 'ประเทศ', 'จังหวัด',
+    #      'เขต/อำเภอ', 'รหัสไปรษณีย์', 'ประเภทคำสั่งซื้อ', 'บันทึก'
+    #
+    #      ], axis=1, inplace=True)
+
+    shp_col1['SKU'] = '=RIGHT(E2,7)'
+    shp_col1['ORDERSKU'] = '=A2&K2'
+    shp_col1['OMS'] = ''
+    shp_col1['SHP ORDER'] = '="SHP"&A2'
+    shp_col1['G Drive'] = ''
+    shp_col1['CONFIG'] = ''
+    shp_col1['SBC'] = ''
+    shp_col1['COLOR'] = ''
+    shp_col1['SIZE'] = ''
+    shp_col1['FULLPRICE'] = ''
+
+
+
+    #shp_df2.drop(['เหตุผลในการยกเลิกคำสั่งซื้อ', 'สถานะการคืนเงินหรือคืนสินค้า', 'ชื่อผู้ใช้ (ผู้ซื้อ)',
+    #               'เวลาการชำระสินค้า', 'ช่องทางการชำระเงิน', 'ตัวเลือกการจัดส่ง',
+    #               'วิธีการจัดส่ง', '*หมายเลขติดตามพัสดุ',
+    #               'วันที่คาดว่าจะทำการจัดส่งสินค้า', 'เวลาส่งสินค้า',
+    #               'เลขอ้างอิง Parent SKU', 'ชื่อสินค้า', 'ชื่อตัวเลือก', 'ส่วนลดจาก Shopee',
+    #               'โค้ดส่วนลดชำระโดยผู้ขาย', 'โค้ด Coins Cashback',
+    #               'โค้ดส่วนลดชำระโดย Shopee', 'โค้ดส่วนลด',
+    #               'เข้าร่วมแคมเปญ bundle deal หรือไม่',
+    #               'ส่วนลด bundle deal ชำระโดยผู้ขาย', 'ส่วนลด bundle deal ชำระโดย Shopee',
+    #               'ส่วนลดจากการใช้เหรียญ', 'ส่วนลดทั้งหมดจากบัตรเครดิต', 'ค่าคอมมิชชั่น',
+    #               'Transaction Fee', 'ต้นทุนขายหักคูปองและcoin',
+    #               'ค่าจัดส่งที่ชำระโดยผู้ซื้อ', 'ค่าจัดส่งที่ Shopee ออกให้โดยประมาณ',
+    #               'ค่าจัดส่งสินค้าคืน', 'ค่าบริการ', 'ค่าจัดส่งโดยประมาณ', 'ชื่อผู้รับ',
+    #               'หมายเลขโทรศัพท์', 'หมายเหตุจากผู้ซื้อ', 'ที่อยู่ในการจัดส่ง', 'ประเทศ',
+    #               'จังหวัด', 'เขต/อำเภอ', 'รหัสไปรษณีย์', 'ประเภทคำสั่งซื้อ',
+    #               'เวลาที่ทำการสั่งซื้อสำเร็จ', 'บันทึก'
+    #
+    #               ], axis=1, inplace=True)
+
+    shp_df2['SKU'] = '=RIGHT(D2,7)'
+    shp_df2['ORDERSKU'] = '=A2&J2'
+    shp_df2['OMS'] = ''
+    shp_df2['SHP ORDER'] = '="SHP"&A2'
+    shp_df2['G Drive'] = ''
+    shp_df2['CONFIG'] = ''
+    shp_df2['SBC'] = ''
+    shp_df2['COLOR'] = ''
+    shp_df2['SIZE'] = ''
+    shp_df2['FULLPRICE'] = ''
+
+    # df1.to_excel(r'Shopee_1.xlsx', index=False)
+    # df2.to_excel(r'Shopee_2.xlsx', index=False)
+
+    shopee_file_new = pd.ExcelWriter('MERGE_SHP.xlsx')
+    shp_col1.to_excel(shopee_file_new, sheet_name='DATA1', merge_cells=False, index=False)
+    shp_col2.to_excel(shopee_file_new, sheet_name='DATA2', merge_cells=False, index=False)
+    shopee_file_new.close()
+
+
+
+def MIRAKL():
+
+    mrk_file = 'Mirakl 5 NOV.xlsx'
+
+    mrk_df1 = pd.read_excel(mrk_file, 'orders')
+    mrk_col1 = mrk_df1.loc[:, (
+                              'Date created', 'Order number', 'Quantity', 'Status', 'Amount', 'Store SKU', 'Unit price',
+                              'Customer Paid Price')]
+    mrk_file = 'Mirakl 5 NOV.xlsx'
+
+    mrk_col1['OMS'] = ''
+    mrk_col1['CONFIG'] = ''
+    mrk_col1['SBC'] = ''
+    mrk_col1['COLOR'] = ''
+    mrk_col1['SIZE'] = ''
+
+    mrk_col1.to_excel(r'MERGE_MRK.xlsx', index=False)
+
+
+def LAZADA():
+
+    laz_file = 'Lazada 5 NOV.xlsx'
+
+    laz_df1 = pd.read_excel(laz_file, 'ALLDATA')
+
+    laz_col1 = laz_df1.loc[:, (
+                                  'Seller SKU', 'Created at', 'Order Number', 'Paid Price', 'Shipment Type Name', 'Status',
+                            )]
+
+    laz_col1['SKU'] = '=RIGHT(A2,7)'
+    laz_col1['ORDERSKU'] = '=C2&G2'
+    laz_col1['OMS'] = ''
+    laz_col1['LAZ ORDER'] = '="LAZ"&C2'
+    laz_col1['G Drive'] = ''
+    laz_col1['CONFIG'] = ''
+    laz_col1['SBC'] = ''
+    laz_col1['COLOR'] = ''
+    laz_col1['SIZE'] = ''
+
+    # print(laz_df1.columns)
+    # print(len(laz_df1))
+    laz_col1.to_excel('MERGE_LAZ.xlsx', index=False)
+
+def JD():
+
+    jd_file = 'JD 5 NOV.xlsx'
+
+    jd_df1 = pd.read_excel(jd_file)
+    # jd_df1 = pd.read_excel(jd_file, 'ALLDATA')
+
+    jd_col1 = jd_df1.loc[:, (
+                                  'Order Number', 'Order Time', 'Payment Method', 'Eclp Order',
+                                  'Product UPC Code', 'Jingdong Price', 'Qty', 'Price Promotion', 'Order Status'
+
+                              )]
+
+    jd_col1['SKU'] = '=RIGHT(E2,7)'
+    jd_col1['ORDERSKU'] = '=A2&J2'
+    jd_col1['OMS'] = ''
+    jd_col1['JD ORDER'] = '="JD"&A2'
+    jd_col1['G Drive'] = ''
+    jd_col1['CONFIG'] = ''
+    jd_col1['SBC'] = ''
+    jd_col1['COLOR'] = ''
+    jd_col1['SIZE'] = ''
+
+
+    jd_col1.to_excel('MERGE_JD.xlsx', index=False)
+
+
+
+
+print('Success!')
+JD()
+# LAZADA()
+# SHOPEE()
+# MIRAKL()
+# print(shp_df1.columns)
+# print(shp_df2.columns)
+# print(mrk_df1.columns)
+# print(mrk_sp1.columns)
+
+# print(laz_df1.columns)
+# print(len(laz_df1))
+
+
+
