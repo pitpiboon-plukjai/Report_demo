@@ -81,7 +81,7 @@ def SHOPEE():
     # shp_col3.to_excel(shopee_file_new, sheet_name='DATA2', merge_cells=False, index=False)
     # shopee_file_new.close()
 
-    im_oms['MIX'] = '=A2&RIGHT(C2,7)'
+    im_oms['MIX'] = '=RIGHT(A2,14)&RIGHT(C2,7)'
     im_oms1 = im_oms.loc[im_oms["Order Number"].str.contains('SHP')]
     shopee_file_new = pd.ExcelWriter('MERGE_SHP.xlsx')
     shp_filter3.to_excel(shopee_file_new, sheet_name='DATA1', merge_cells=False, index=False)
