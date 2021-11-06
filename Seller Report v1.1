@@ -2,40 +2,57 @@ import pandas as pd
 
 #Shopee------------------------------------------------------------------
 
-shp_file = 'SHOPEE 5 NOV.xlsx'
-shp_df1 = pd.read_excel(shp_file, 'DATA1')
-shp_df2 = pd.read_excel(shp_file, 'DATA2')
+shp_file = 'SHP_06NOV.xlsx'
+shp_df1 = pd.read_excel(shp_file, 'G1')
+shp_df2 = pd.read_excel(shp_file, 'G2')
 
 
 #Mirakl------------------------------------------------------------------
-mrk_file = 'Mirakl 5 NOV.xlsx'
+mrk_file = 'MRK_06NOV.xlsx'
 mrk_df1 = pd.read_excel(mrk_file, 'orders')
 
 
 #Lazada------------------------------------------------------------------
 
 
-laz_file = 'Lazada 5 NOV.xlsx'
-laz_df1 = pd.read_excel(laz_file, 'ALLDATA')
+laz_file = 'LAZ_06NOV.xlsx'
+laz_df1 = pd.read_excel(laz_file, 'Sheet2')
 
 #JD------------------------------------------------------------------
 
 
-jd_file = 'JD 5 NOV.xlsx'
+jd_file = 'JD_06NOV.xlsx'
 jd_df1 = pd.read_excel(jd_file)
 
 
 #Oms ------------------------------------------------------------------
 
-im_oms = pd.read_csv('OmsReports_1636081266.csv')
+im_oms = pd.read_csv('OmsReports_1636204685.csv')
 
 #Location------------------------------------------------------------------
 
-location = pd.read_csv('FilteredOut_1636081328.csv')
+location = pd.read_csv('FilteredOut_1636204687.csv')
+
+#Sheet --------------------------------------------------------------------------
+
+sheet_id = '1mfXsPGGQl-BxuuY2z3RuaSGc53mqqq6heIrundmiz3A'
+
+jd_ws = '1162856794'
+laz_ws = '0'
+shp_ws = '1717881992'
+mrk_ws = '1277584094'
+
+# df = pd.read_csv(f"https://docs.google.com/spreadsheets/d/{sheet_id}/export?format=csv")
+
+jd_report = pd.read_csv(f"https://docs.google.com/spreadsheets/d/{sheet_id}/export?gid={jd_ws}&format=csv")
+laz_report = pd.read_csv(f"https://docs.google.com/spreadsheets/d/{sheet_id}/export?gid={laz_ws}&format=csv")
+shp_report = pd.read_csv(f"https://docs.google.com/spreadsheets/d/{sheet_id}/export?gid={shp_ws}&format=csv")
+mrk_report = pd.read_csv(f"https://docs.google.com/spreadsheets/d/{sheet_id}/export?gid={mrk_ws}&format=csv")
 
 # --------------------------------------------------------------------------
 
 def SHOPEE():
+
 
     shp_filter1 = shp_df1.loc[:, ('หมายเลขคำสั่งซื้อ', 'สถานะการสั่งซื้อ', 'วันที่ทำการสั่งซื้อ',
                                'คำสั่งซื้อที่ดำเนินการโดย Shopee',
@@ -61,6 +78,8 @@ def SHOPEE():
                                'เลขอ้างอิง SKU (SKU Reference No.)', 'ราคาตั้งต้น', 'ราคาขาย', 'จำนวน',
                                'ราคาขายสุทธิ', 'จำนวนเงินทั้งหมด')]
 
+
+
     shp_col3 = shp_col2.loc[shp_col2["สถานะการสั่งซื้อ"] == 'ที่ต้องจัดส่ง']
 
     shp_col3['SKU'] = '=RIGHT(D2,7)'
@@ -81,13 +100,19 @@ def SHOPEE():
     # shp_col3.to_excel(shopee_file_new, sheet_name='DATA2', merge_cells=False, index=False)
     # shopee_file_new.close()
 
+    shp_ws_fil = shp_report.loc[:, ('Unnamed: 1', 'Shopee.1')]
+
     im_oms['MIX'] = '=RIGHT(A2,14)&RIGHT(C2,7)'
     im_oms1 = im_oms.loc[im_oms["Order Number"].str.contains('SHP')]
     shopee_file_new = pd.ExcelWriter('MERGE_SHP.xlsx')
     shp_filter3.to_excel(shopee_file_new, sheet_name='DATA1', merge_cells=False, index=False)
     shp_col3.to_excel(shopee_file_new, sheet_name='DATA2', merge_cells=False, index=False)
     im_oms1.to_excel(shopee_file_new, sheet_name='OMS', merge_cells=False, index=False)
+    # shp_report.to_excel(shopee_file_new, sheet_name='G drive from sheet', merge_cells=False, index=False)
+    shp_ws_fil.to_excel(shopee_file_new, sheet_name='G drive from sheet', merge_cells=False, index=False)
     shopee_file_new.close()
+
+    print('Shopee Done!')
 
 
 
@@ -100,6 +125,8 @@ def MIRAKL():
 
     mrk_filter2 = mrk_filter1.loc[mrk_filter1["Status"] == 'Shipping in Progress']
 
+
+
     mrk_filter1['OMS'] = ''
     mrk_filter1['CONFIG'] = ''
     mrk_filter1['SBC'] = ''
@@ -108,12 +135,18 @@ def MIRAKL():
 
     # mrk_filter2.to_excel(r'MERGE_MRK.xlsx', index=False)
 
+    mrk_ws_fil = mrk_report.loc[:, ('Unnamed: 1', 'mirakl.1')]
+
     im_oms['MIX'] = '=RIGHT(A2,20)'
     im_oms1 = im_oms.loc[im_oms["Order Number"].str.contains('MRK')]
     mrk_file_new = pd.ExcelWriter('MERGE_MRK.xlsx')
     mrk_filter2.to_excel(mrk_file_new, sheet_name='DATA1', merge_cells=False, index=False)
     im_oms1.to_excel(mrk_file_new, sheet_name='OMS', merge_cells=False, index=False)
+    # mrk_report.to_excel(mrk_file_new, sheet_name='G drive from sheet', merge_cells=False, index=False)
+    mrk_ws_fil.to_excel(mrk_file_new, sheet_name='G drive from sheet', merge_cells=False, index=False)
     mrk_file_new.close()
+
+    print('Mirakl Done!')
 
 
 def LAZADA():
@@ -139,12 +172,17 @@ def LAZADA():
 
     # laz_filter3.to_excel('MERGE_LAZ.xlsx', index=False)
 
+    laz_ws_fil = laz_report.loc[:, ('Unnamed: 1', 'Lazada.1')]
     im_oms['MIX'] = '=MID(A2,4,15)&RIGHT(C2,7)'
     im_oms1 = im_oms.loc[im_oms["Order Number"].str.contains('LAZ')]
     laz_file_new = pd.ExcelWriter('MERGE_LAZ.xlsx')
     laz_filter3.to_excel(laz_file_new, sheet_name='DATA1', merge_cells=False, index=False)
     im_oms1.to_excel(laz_file_new, sheet_name='OMS', merge_cells=False, index=False)
+    # laz_report.to_excel(laz_file_new, sheet_name='G drive from sheet', merge_cells=False, index=False)
+    laz_ws_fil.to_excel(laz_file_new, sheet_name='G drive from sheet', merge_cells=False, index=False)
     laz_file_new.close()
+
+    print('Lazada Done!')
 
 def JD():
 
@@ -170,12 +208,18 @@ def JD():
 
     # jd_filter3.to_excel('MERGE_JD.xlsx', index=False)
 
+    jd_ws_fil = jd_report.loc[:, ('Unnamed: 1', 'JD.1')]
+
     im_oms['MIX'] = '=RIGHT(A2,8)&RIGHT(C2,7)'
     im_oms1 = im_oms.loc[im_oms["Order Number"].str.contains('JD')]
     jd_file_new = pd.ExcelWriter('MERGE_JD.xlsx')
     jd_filter3.to_excel(jd_file_new, sheet_name='DATA1', merge_cells=False, index=False)
     im_oms1.to_excel(jd_file_new, sheet_name='OMS', merge_cells=False, index=False)
+    # jd_report.to_excel(jd_file_new, sheet_name='G drive from sheet', merge_cells=False, index=False)
+    jd_ws_fil.to_excel(jd_file_new, sheet_name='G drive from sheet', merge_cells=False, index=False)
     jd_file_new.close()
+
+    print('JD Done!')
 
 
 def Filo():
@@ -188,29 +232,20 @@ def Filo():
     # =TEXTJOIN(", ", TRUE, IF($A$2:$A$1048557 = C2,$B$2:$B$1048557, ""))
 
 
-    location1.to_excel('location.xlsx', index=False)
+    location1.to_excel('Location.xlsx', index=False)
+
+    print('Location Done!')
 
 
-
-
-
-
-
-JD()
-LAZADA()
 SHOPEE()
 MIRAKL()
-# Filo()
+LAZADA()
+JD()
+Filo()
 
 
 print('Compile Successfully!')
-# print(shp_df1.columns)
-# print(shp_df2.columns)
-# print(mrk_df1.columns)
-# print(mrk_sp1.columns)
 
-# print(laz_df1.columns)
-# print(len(laz_df1))
 
 
 
