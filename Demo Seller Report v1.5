@@ -1,0 +1,342 @@
+import pandas as pd
+import warnings
+from pandas.core.common import SettingWithCopyWarning
+warnings.simplefilter("ignore", UserWarning)
+warnings.simplefilter(action="ignore", category=SettingWithCopyWarning)
+
+
+#Shopee------------------------------------------------------------------
+
+shp_file = 'SHP.xlsx'
+
+shp_df1 = pd.read_excel(shp_file, 'DATA1')
+shp_df2 = pd.read_excel(shp_file, 'DATA2')
+
+# shp_df1 = pd.read_excel(shp_file, 'G1')
+# shp_df2 = pd.read_excel(shp_file, 'G2')
+
+
+#Mirakl------------------------------------------------------------------
+mrk_file = 'MRK.xlsx'
+mrk_df1 = pd.read_excel(mrk_file, 'orders')
+
+
+#Lazada------------------------------------------------------------------
+
+
+laz_file = 'LAZ.xlsx'
+laz_df1 = pd.read_excel(laz_file, 'ALLDATA')
+
+#JD------------------------------------------------------------------
+
+
+jd_file = 'JD.xlsx'
+jd_df1 = pd.read_excel(jd_file)
+
+
+#Oms ------------------------------------------------------------------
+
+im_oms = pd.read_csv('OmsReports.csv')
+
+#Location------------------------------------------------------------------
+
+location = pd.read_csv('FilteredOut.csv')
+
+#Masterlist--------------------------------------------------------------------------
+
+mtr_file = pd.read_csv('MTL_Aware.csv')
+
+
+#Sheet --------------------------------------------------------------------------
+
+sheet_id = '1mfXsPGGQl-BxuuY2z3RuaSGc53mqqq6heIrundmiz3A'
+
+jd_ws = '1162856794'
+laz_ws = '0'
+shp_ws = '1717881992'
+mrk_ws = '1277584094'
+
+jd_report = pd.read_csv(f"https://docs.google.com/spreadsheets/d/{sheet_id}/export?gid={jd_ws}&format=csv")
+laz_report = pd.read_csv(f"https://docs.google.com/spreadsheets/d/{sheet_id}/export?gid={laz_ws}&format=csv")
+shp_report = pd.read_csv(f"https://docs.google.com/spreadsheets/d/{sheet_id}/export?gid={shp_ws}&format=csv")
+mrk_report = pd.read_csv(f"https://docs.google.com/spreadsheets/d/{sheet_id}/export?gid={mrk_ws}&format=csv")
+
+
+
+# --------------------------------------------------------------------------
+
+def SHOPEE():
+
+
+    shp_filter1 = shp_df1.loc[:, ('หมายเลขคำสั่งซื้อ', 'สถานะการสั่งซื้อ', 'วันที่ทำการสั่งซื้อ',
+                               'คำสั่งซื้อที่ดำเนินการโดย Shopee',
+                               'เลขอ้างอิง SKU (SKU Reference No.)', 'ราคาตั้งต้น', 'ราคาขาย', 'จำนวน',
+                               'ราคาขายสุทธิ', 'จำนวนเงินทั้งหมด')]
+
+    shp_filter2 = shp_filter1.loc[shp_filter1["สถานะการสั่งซื้อ"] == 'ที่ต้องจัดส่ง']
+    shp_filter3 = shp_filter2.loc[shp_filter2["คำสั่งซื้อที่ดำเนินการโดย Shopee"] == 'No']
+
+
+    shp_filter3['SKU'] = '=RIGHT(E2,7)'
+    shp_filter3['ORDERSKU'] = '=A2&K2'
+    shp_filter3['OMS'] = '=VLOOKUP(L:L,OMS!F:F,1,0)'
+    shp_filter3['SHP ORDER'] = '="SHP"&A2'
+    shp_filter3['G Drive'] = "=VLOOKUP(N:N,'G drive from sheet'!B:B,1,0)"
+    shp_filter3['CONFIG'] = "=VLOOKUP($K2,Masterlist!B:G,2,0)"
+    shp_filter3['SBC'] = "=TEXT(VLOOKUP($K2,Masterlist!B:G,3,0),0)"
+    shp_filter3['COLOR'] = "=VLOOKUP($K2,Masterlist!B:G,4,0)"
+    shp_filter3['SIZE'] = "=VLOOKUP($K2,Masterlist!B:G,5,0)"
+    shp_filter3['FULLPRICE'] = "=VLOOKUP($K2,Masterlist!B:G,6,0)"
+
+    shp_col2 = shp_df2.loc[:, ('หมายเลขคำสั่งซื้อ', 'สถานะการสั่งซื้อ', 'วันที่ทำการสั่งซื้อ',
+                               'เลขอ้างอิง SKU (SKU Reference No.)', 'ราคาตั้งต้น', 'ราคาขาย', 'จำนวน',
+                               'ราคาขายสุทธิ', 'จำนวนเงินทั้งหมด')]
+
+    shp_col3 = shp_col2.loc[shp_col2["สถานะการสั่งซื้อ"] == 'ที่ต้องจัดส่ง']
+
+
+    shp_col3['SKU'] = '=RIGHT(D2,7)'
+    shp_col3['ORDERSKU'] = '=A2&J2'
+    shp_col3['OMS'] = '=VLOOKUP(K:K,OMS!F:F,1,0)'
+    shp_col3['SHP ORDER'] = '="SHP"&A2'
+    shp_col3['G Drive'] = "=VLOOKUP(M:M,'G drive from sheet'!B:B,1,0)"
+    shp_col3['CONFIG'] = "=VLOOKUP($J2,Masterlist!B:G,2,0)"
+    shp_col3['SBC'] = "=TEXT(VLOOKUP($J2,Masterlist!B:G,3,0),0)"
+    shp_col3['COLOR'] = "=VLOOKUP($J2,Masterlist!B:G,4,0)"
+    shp_col3['SIZE'] = "=VLOOKUP($J2,Masterlist!B:G,5,0)"
+    shp_col3['FULLPRICE'] = "=VLOOKUP($J2,Masterlist!B:G,6,0)"
+
+    shp_ws_fil = shp_report.loc[:, ('Unnamed: 1', 'Shopee.1')]
+
+
+    im_oms['MIX'] = '=RIGHT(A2,14)&RIGHT(C2,7)'
+    im_oms1 = im_oms.loc[im_oms["Order Number"].str.contains('SHP')]
+
+
+    # im_oms['MIX'] = '=A2&RIGHT(C2,7)'
+    # shopee_file_new = pd.ExcelWriter('MERGE_SHP.xlsx')
+    # shp_filter3.to_excel(shopee_file_new, sheet_name='DATA1', merge_cells=False, index=False)
+    # shp_col3.to_excel(shopee_file_new, sheet_name='DATA2', merge_cells=False, index=False)
+    # shopee_file_new.close()
+
+
+
+    shopee_file_new = pd.ExcelWriter('MERGE_SHP.xlsx')
+    shp_filter3.to_excel(shopee_file_new, sheet_name='DATA1', merge_cells=False, index=False)
+    shp_col3.to_excel(shopee_file_new, sheet_name='DATA2', merge_cells=False, index=False)
+    im_oms1.to_excel(shopee_file_new, sheet_name='OMS', merge_cells=False, index=False)
+    # shp_report.to_excel(shopee_file_new, sheet_name='G drive from sheet', merge_cells=False, index=False)
+    shp_ws_fil.to_excel(shopee_file_new, sheet_name='G drive from sheet', merge_cells=False, index=False)
+    mtr_file.to_excel(shopee_file_new, sheet_name='Masterlist', merge_cells=False, index=False)
+    shopee_file_new.close()
+
+    print('Shopee Done!')
+
+
+
+def MIRAKL():
+
+    mrk_filter1 = mrk_df1.loc[:, (
+                                     'Date created', 'Order number', 'Quantity', 'Status', 'Amount', 'Store SKU',
+                                     'Unit price',
+                                     'Customer Paid Price')]
+
+    mrk_filter2 = mrk_filter1.loc[mrk_filter1["Status"] == 'Shipping in Progress']
+
+    mrk_filter2.to_excel(r'MERGE_MRK.xlsx', index=False)
+
+    mrk_off = pd.read_excel('MERGE_MRK.xlsx')
+
+    mrk_off['MRK ORDER'] = ''
+    mrk_off['OMS'] = ''
+    mrk_off['CONFIG'] = ""
+    mrk_off['SBC'] = ""
+    mrk_off['COLOR'] = ""
+    mrk_off['SIZE'] = ""
+    mrk_off['SKU FOR LOCATION'] = ''
+
+    all_row = int(len(mrk_off))
+
+    for i in range(all_row):
+
+        mrk_off.__getitem__('MRK ORDER').__setitem__({i}, '=LEFT(B' + str(i + 2)+',20)')
+        mrk_off.__getitem__('OMS').__setitem__({i}, '=VLOOKUP(I:I,OMS!F:F,1,0)')
+        mrk_off.__getitem__('CONFIG').__setitem__({i}, '=VLOOKUP($F' + str(i + 2) + ',Masterlist!B:G,2,0)')
+        mrk_off.__getitem__('SBC').__setitem__({i}, '=TEXT(VLOOKUP($F' + str(i + 2) + ',Masterlist!B:G,3,0),0)')
+        mrk_off.__getitem__('COLOR').__setitem__({i}, '=VLOOKUP($F' + str(i + 2) + ',Masterlist!B:G,4,0)')
+        mrk_off.__getitem__('SIZE').__setitem__({i}, '=VLOOKUP($F' + str(i + 2) + ',Masterlist!B:G,5,0)')
+        mrk_off.__getitem__('SKU FOR LOCATION').__setitem__({i}, '=K' + str(i + 2) + '&"-"&F'+ str(i + 2))
+
+
+    mrk_ws_fil = mrk_report.loc[:, ('Unnamed: 1', 'mirakl.1')]
+
+    im_oms['MIX'] = ''
+    im_oms1 = im_oms.loc[im_oms["Order Number"].str.contains('MRK')]
+
+    im_oms1.to_excel(r'MERGE_MRK.xlsx', index=False)
+
+
+    oms_off = pd.read_excel('MERGE_MRK.xlsx')
+
+    oms_rows = int(len(oms_off))
+
+    for i in range(oms_rows):
+
+        oms_off.__getitem__('MIX').__setitem__({i}, '=RIGHT(A' + str(i + 2)+',20)')
+
+
+    mrk_file_new = pd.ExcelWriter('MERGE_MRK.xlsx')
+    mrk_off.to_excel(mrk_file_new, sheet_name='DATA1', merge_cells=False, index=False)
+    oms_off.to_excel(mrk_file_new, sheet_name='OMS', merge_cells=False, index=False)
+    # mrk_report.to_excel(mrk_file_new, sheet_name='G drive from sheet', merge_cells=False, index=False)
+    mrk_ws_fil.to_excel(mrk_file_new, sheet_name='G drive from sheet', merge_cells=False, index=False)
+    mtr_file.to_excel(mrk_file_new, sheet_name='Masterlist', merge_cells=False, index=False)
+    mrk_file_new.close()
+
+    # all_row = int(len(mrk_off))
+
+    # print(mrk_off)
+
+    print('Mirakl Done!')
+
+
+def LAZADA():
+
+    laz_filter1 = laz_df1.loc[:, (
+                                  'Seller SKU', 'Created at', 'Order Number', 'Paid Price',
+                                  'Shipment Type Name', 'Status'
+                            )]
+
+
+
+    laz_filter2 = laz_filter1.loc[laz_filter1["Shipment Type Name"] == 'Dropshipping']
+    laz_filter3 = laz_filter2.loc[laz_filter2["Status"] == 'Pending']
+
+    laz_filter3.to_excel(r'MERGE_LAZ.xlsx', index=False)
+
+    laz_off = pd.read_excel('MERGE_LAZ.xlsx')
+    #
+    laz_off['7F'] = ''
+    laz_off['Merge J & BP'] = ''
+    laz_off['OMS'] = ''
+    laz_off['Laz'] = ''
+    laz_off['G Drive 7']= ""
+    laz_off['CONFIG'] = ""
+    laz_off['SBC'] = ""
+    laz_off['COLOR'] = ""
+    laz_off['SIZE'] = ""
+    laz_off['FULLPRICE'] = ""
+    laz_off['SKU FOR LOCATION'] = ''
+
+
+    all_row = int(len(laz_off))
+    #
+    for i in range(all_row):
+        laz_off.__getitem__('7F').__setitem__({i}, '=RIGHT(A' + str(i + 2) + ',7)')
+        laz_off.__getitem__('Merge J & BP').__setitem__({i}, '=C' + str(i + 2) + '&G' + str(i + 2))
+        laz_off.__getitem__('OMS').__setitem__({i}, '=VLOOKUP(H:H,OMS!F:F,1,0)')
+        laz_off.__getitem__('Laz').__setitem__({i}, '="LAZ"&C' + str(i + 2))
+        laz_off.__getitem__('G Drive 7').__setitem__({i}, "=VLOOKUP(J:J,'G drive from sheet'!B:B,1,0)")
+        laz_off.__getitem__('CONFIG').__setitem__({i}, "=VLOOKUP($G" + str(i + 2) + ',Masterlist!B:G,2,0)')
+        laz_off.__getitem__('SBC').__setitem__({i}, "=TEXT(VLOOKUP($G" + str(i + 2) + ',Masterlist!B:G,3,0),0)')
+        laz_off.__getitem__('COLOR').__setitem__({i}, "=VLOOKUP($G" + str(i + 2) + ',Masterlist!B:G,4,0)')
+        laz_off.__getitem__('SIZE').__setitem__({i}, "=VLOOKUP($G" + str(i + 2) + ',Masterlist!B:G,5,0)')
+        laz_off.__getitem__('FULLPRICE').__setitem__({i}, "=VLOOKUP($G" + str(i + 2) + ',Masterlist!B:G,6,0)')
+        laz_off.__getitem__('SKU FOR LOCATION').__setitem__({i}, '=L' + str(i + 2) + '&G' + str(i + 2))
+
+    laz_ws_fil = laz_report.loc[:, ('Unnamed: 1', 'Lazada.1')]
+    # im_oms['MIX'] = '=MID(A2,4,15)&RIGHT(C2,7)'
+    im_oms['MIX'] = ''
+    im_oms1 = im_oms.loc[im_oms["Order Number"].str.contains('LAZ')]
+
+    im_oms1.to_excel(r'MERGE_LAZ.xlsx', index=False)
+
+    oms_off = pd.read_excel('MERGE_LAZ.xlsx')
+
+    oms_rows = int(len(oms_off))
+
+    for i in range(oms_rows):
+
+        oms_off.__getitem__('MIX').__setitem__({i}, '=MID(A'+ str(i + 2)+',4,15)&RIGHT(C'+str(i + 2)+',7)')
+
+
+    laz_file_new = pd.ExcelWriter('MERGE_LAZ.xlsx')
+    laz_off.to_excel(laz_file_new, sheet_name='DATA1', merge_cells=False, index=False)
+    # laz_filter3.to_excel(laz_file_new, sheet_name='DATA1', merge_cells=False, index=False)
+    oms_off.to_excel(laz_file_new, sheet_name='OMS', merge_cells=False, index=False)
+
+    # laz_report.to_excel(laz_file_new, sheet_name='G drive from sheet', merge_cells=False, index=False)
+    laz_ws_fil.to_excel(laz_file_new, sheet_name='G drive from sheet', merge_cells=False, index=False)
+    mtr_file.to_excel(laz_file_new, sheet_name='Masterlist', merge_cells=False, index=False)
+    laz_file_new.close()
+
+    print('Lazada Done!')
+
+def JD():
+
+
+    jd_filter1 = jd_df1.loc[:, (
+                                  'Order Number', 'Order Time', 'Payment Method', 'Eclp Order',
+                                  'Product UPC Code', 'Jingdong Price', 'Qty', 'Price Promotion', 'Order Status'
+
+                              )]
+
+    jd_filter1['SKU'] = '=RIGHT(E2,7)'
+    jd_filter1['ORDERSKU'] = '=A2&J2'
+    jd_filter1['OMS'] = "=VLOOKUP(K:K,OMS!F:F,1,0)"
+    jd_filter1['JD ORDER'] = '="JD"&A2'
+    jd_filter1['G Drive'] = "=VLOOKUP(M:M,'G drive from sheet'!B:B,1,0)"
+    jd_filter1['CONFIG'] = "=VLOOKUP($J2,Masterlist!B:G,2,0)"
+    jd_filter1['SBC'] = "=TEXT(VLOOKUP($J2,Masterlist!B:G,3,0),0)"
+    jd_filter1['COLOR'] = "=VLOOKUP($J2,Masterlist!B:G,4,0)"
+    jd_filter1['SIZE'] = "=VLOOKUP($J2,Masterlist!B:G,5,0)"
+    jd_filter1['FULLPRICE'] = "=VLOOKUP($J2,Masterlist!B:G,6,0)"
+
+    jd_filter2 = jd_filter1.loc[jd_filter1["Order Status"] == 'Waiting for shipment']
+    jd_filter3 = jd_filter2.loc[jd_filter2["Eclp Order"] == 'No']
+
+    # jd_filter3.to_excel('MERGE_JD.xlsx', index=False)
+
+    jd_ws_fil = jd_report.loc[:, ('Unnamed: 1', 'JD.1')]
+
+    im_oms['MIX'] = '=RIGHT(A2,8)&RIGHT(C2,7)'
+    im_oms1 = im_oms.loc[im_oms["Order Number"].str.contains('JD')]
+    jd_file_new = pd.ExcelWriter('MERGE_JD.xlsx')
+    jd_filter3.to_excel(jd_file_new, sheet_name='DATA1', merge_cells=False, index=False)
+    im_oms1.to_excel(jd_file_new, sheet_name='OMS', merge_cells=False, index=False)
+    # jd_report.to_excel(jd_file_new, sheet_name='G drive from sheet', merge_cells=False, index=False)
+    jd_ws_fil.to_excel(jd_file_new, sheet_name='G drive from sheet', merge_cells=False, index=False)
+    mtr_file.to_excel(jd_file_new, sheet_name='Masterlist', merge_cells=False, index=False)
+    jd_file_new.close()
+
+    print('JD Done!')
+
+
+def Filo():
+
+    location1 = location.loc[:, ('Sku', 'Location')]
+
+    location1['SKU'] = ''
+    location1['Formula'] = '=TEXTJOIN(", ",TRUE,IF($A$2:$A$1048557=C2,$B$2:$B$1048557,""))'
+
+    # =TEXTJOIN(", ", TRUE, IF($A$2:$A$1048557 = C2,$B$2:$B$1048557, ""))
+
+
+    location1.to_excel('Location.xlsx', index=False)
+
+    print('Location Done!')
+
+
+#
+# SHOPEE()
+# MIRAKL()
+LAZADA()
+# JD()
+# Filo()
+
+
+print('Compile Successfully!')
+
+
+
+
