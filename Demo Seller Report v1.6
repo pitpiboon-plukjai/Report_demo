@@ -25,7 +25,7 @@ mrk_df1 = pd.read_excel(mrk_file, 'orders')
 
 
 laz_file = 'LAZ.xlsx'
-laz_df1 = pd.read_excel(laz_file, 'ALLDATA')
+laz_df1 = pd.read_excel(laz_file, 'Sheet2')
 
 #JD------------------------------------------------------------------
 
@@ -76,17 +76,49 @@ def SHOPEE():
     shp_filter2 = shp_filter1.loc[shp_filter1["สถานะการสั่งซื้อ"] == 'ที่ต้องจัดส่ง']
     shp_filter3 = shp_filter2.loc[shp_filter2["คำสั่งซื้อที่ดำเนินการโดย Shopee"] == 'No']
 
+    shp_filter3.to_excel(r'MERGE_SHP.xlsx', index=False)
 
-    shp_filter3['SKU'] = '=RIGHT(E2,7)'
-    shp_filter3['ORDERSKU'] = '=A2&K2'
-    shp_filter3['OMS'] = '=VLOOKUP(L:L,OMS!F:F,1,0)'
-    shp_filter3['SHP ORDER'] = '="SHP"&A2'
-    shp_filter3['G Drive'] = "=VLOOKUP(N:N,'G drive from sheet'!B:B,1,0)"
-    shp_filter3['CONFIG'] = "=VLOOKUP($K2,Masterlist!B:G,2,0)"
-    shp_filter3['SBC'] = "=TEXT(VLOOKUP($K2,Masterlist!B:G,3,0),0)"
-    shp_filter3['COLOR'] = "=VLOOKUP($K2,Masterlist!B:G,4,0)"
-    shp_filter3['SIZE'] = "=VLOOKUP($K2,Masterlist!B:G,5,0)"
-    shp_filter3['FULLPRICE'] = "=VLOOKUP($K2,Masterlist!B:G,6,0)"
+    shp_off1 = pd.read_excel('MERGE_SHP.xlsx')
+
+    shp_off1['SKU'] = ''
+    shp_off1['ORDERSKU'] = ''
+    shp_off1['OMS'] = ''
+    shp_off1['SHP ORDER'] = '="SHP"&A2'
+    shp_off1['G Drive'] = " "
+    shp_off1['CONFIG'] = ""
+    shp_off1['SBC'] = ""
+    shp_off1['COLOR'] = " "
+    shp_off1['SIZE'] = " "
+    shp_off1['FULLPRICE'] = ""
+    shp_off1['LOCATION'] = ""
+
+
+    all_row1 = int(len(shp_off1))
+
+    for i in range(all_row1):
+        shp_off1.__getitem__('SKU').__setitem__({i}, '=RIGHT(E' + str(i + 2) + ',7)')
+        shp_off1.__getitem__('ORDERSKU').__setitem__({i}, '=A' + str(i + 2) + '&K' + str(i + 2))
+        shp_off1.__getitem__('OMS').__setitem__({i}, '=VLOOKUP(L:L,OMS!F:F,1,0)')
+        shp_off1.__getitem__('SHP ORDER').__setitem__({i}, '="SHP"&A' + str(i + 2))
+        shp_off1.__getitem__('G Drive').__setitem__({i}, "=VLOOKUP(N:N,'G drive from sheet'!B:B,1,0)")
+        shp_off1.__getitem__('CONFIG').__setitem__({i}, '=VLOOKUP($K' + str(i + 2) + ',Masterlist!B:G,2,0)')
+        shp_off1.__getitem__('SBC').__setitem__({i}, '=TEXT(VLOOKUP($K' + str(i + 2) + ',Masterlist!B:G,3,0),0)')
+        shp_off1.__getitem__('COLOR').__setitem__({i}, '=VLOOKUP($K' + str(i + 2) + ',Masterlist!B:G,4,0)')
+        shp_off1.__getitem__('SIZE').__setitem__({i}, '=VLOOKUP($K' + str(i + 2) + ',Masterlist!B:G,5,0)')
+        shp_off1.__getitem__('FULLPRICE').__setitem__({i}, '=VLOOKUP($K' + str(i + 2) + ',Masterlist!B:G,6,0)')
+
+
+
+    # shp_filter3['SKU'] = '=RIGHT(E2,7)'
+    # shp_filter3['ORDERSKU'] = '=A2&K2'
+    # shp_filter3['OMS'] = '=VLOOKUP(L:L,OMS!F:F,1,0)'
+    # shp_filter3['SHP ORDER'] = '="SHP"&A2'
+    # shp_filter3['G Drive'] = "=VLOOKUP(N:N,'G drive from sheet'!B:B,1,0)"
+    # shp_filter3['CONFIG'] = "=VLOOKUP($K2,Masterlist!B:G,2,0)"
+    # shp_filter3['SBC'] = "=TEXT(VLOOKUP($K2,Masterlist!B:G,3,0),0)"
+    # shp_filter3['COLOR'] = "=VLOOKUP($K2,Masterlist!B:G,4,0)"
+    # shp_filter3['SIZE'] = "=VLOOKUP($K2,Masterlist!B:G,5,0)"
+    # shp_filter3['FULLPRICE'] = "=VLOOKUP($K2,Masterlist!B:G,6,0)"
 
     shp_col2 = shp_df2.loc[:, ('หมายเลขคำสั่งซื้อ', 'สถานะการสั่งซื้อ', 'วันที่ทำการสั่งซื้อ',
                                'เลขอ้างอิง SKU (SKU Reference No.)', 'ราคาตั้งต้น', 'ราคาขาย', 'จำนวน',
@@ -94,23 +126,60 @@ def SHOPEE():
 
     shp_col3 = shp_col2.loc[shp_col2["สถานะการสั่งซื้อ"] == 'ที่ต้องจัดส่ง']
 
+    shp_col3.to_excel(r'MERGE_SHP.xlsx', index=False)
 
-    shp_col3['SKU'] = '=RIGHT(D2,7)'
-    shp_col3['ORDERSKU'] = '=A2&J2'
-    shp_col3['OMS'] = '=VLOOKUP(K:K,OMS!F:F,1,0)'
-    shp_col3['SHP ORDER'] = '="SHP"&A2'
-    shp_col3['G Drive'] = "=VLOOKUP(M:M,'G drive from sheet'!B:B,1,0)"
-    shp_col3['CONFIG'] = "=VLOOKUP($J2,Masterlist!B:G,2,0)"
-    shp_col3['SBC'] = "=TEXT(VLOOKUP($J2,Masterlist!B:G,3,0),0)"
-    shp_col3['COLOR'] = "=VLOOKUP($J2,Masterlist!B:G,4,0)"
-    shp_col3['SIZE'] = "=VLOOKUP($J2,Masterlist!B:G,5,0)"
-    shp_col3['FULLPRICE'] = "=VLOOKUP($J2,Masterlist!B:G,6,0)"
+    shp_off2 = pd.read_excel('MERGE_SHP.xlsx')
+
+    shp_off2['SKU'] = ''
+    shp_off2['ORDERSKU'] = ''
+    shp_off2['OMS'] = ''
+    shp_off2['SHP ORDER'] = '="SHP"&A2'
+    shp_off2['G Drive'] = "=VLOOKUP(M:M,'G drive from sheet'!B:B,1,0)"
+    shp_off2['CONFIG'] = "=VLOOKUP($J2,Masterlist!B:G,2,0)"
+    shp_off2['SBC'] = "=TEXT(VLOOKUP($J2,Masterlist!B:G,3,0),0)"
+    shp_off2['COLOR'] = "=VLOOKUP($J2,Masterlist!B:G,4,0)"
+    shp_off2['SIZE'] = "=VLOOKUP($J2,Masterlist!B:G,5,0)"
+    shp_off2['FULLPRICE'] = "=VLOOKUP($J2,Masterlist!B:G,6,0)"
+
+    all_row2 = int(len(shp_off2))
+
+    for i in range(all_row2):
+        shp_off2.__getitem__('SKU').__setitem__({i}, '=RIGHT(D' + str(i + 2) + ',7)')
+        shp_off2.__getitem__('ORDERSKU').__setitem__({i}, '=A' + str(i + 2) + '&J' + str(i + 2))
+        shp_off2.__getitem__('G Drive').__setitem__({i}, "=VLOOKUP(M:M,'G drive from sheet'!B:B,1,0)")
+        shp_off2.__getitem__('CONFIG').__setitem__({i}, '=VLOOKUP($J' + str(i + 2) + ',Masterlist!B:G,2,0)')
+        shp_off2.__getitem__('SBC').__setitem__({i}, '=TEXT(VLOOKUP($J' + str(i + 2) + ',Masterlist!B:G,3,0),0)')
+        shp_off2.__getitem__('COLOR').__setitem__({i}, '=VLOOKUP($J' + str(i + 2) + ',Masterlist!B:G,4,0)')
+        shp_off2.__getitem__('SIZE').__setitem__({i}, '=VLOOKUP($J' + str(i + 2) + ',Masterlist!B:G,5,0)')
+        shp_off2.__getitem__('FULLPRICE').__setitem__({i}, '=VLOOKUP($J' + str(i + 2) + ',Masterlist!B:G,6,0)')
+
+
+    # shp_col3['ORDERSKU'] = '=A2&J2'
+    # shp_col3['OMS'] = '=VLOOKUP(K:K,OMS!F:F,1,0)'
+    # shp_col3['SHP ORDER'] = '="SHP"&A2'
+    # shp_col3['G Drive'] = "=VLOOKUP(M:M,'G drive from sheet'!B:B,1,0)"
+    # shp_col3['CONFIG'] = "=VLOOKUP($J2,Masterlist!B:G,2,0)"
+    # shp_col3['SBC'] = "=TEXT(VLOOKUP($J2,Masterlist!B:G,3,0),0)"
+    # shp_col3['COLOR'] = "=VLOOKUP($J2,Masterlist!B:G,4,0)"
+    # shp_col3['SIZE'] = "=VLOOKUP($J2,Masterlist!B:G,5,0)"
+    # shp_col3['FULLPRICE'] = "=VLOOKUP($J2,Masterlist!B:G,6,0)"
 
     shp_ws_fil = shp_report.loc[:, ('Unnamed: 1', 'Shopee.1')]
 
 
-    im_oms['MIX'] = '=RIGHT(A2,14)&RIGHT(C2,7)'
+    # im_oms['MIX'] = '=RIGHT(A2,14)&RIGHT(C2,7)'
     im_oms1 = im_oms.loc[im_oms["Order Number"].str.contains('SHP')]
+
+    im_oms1.to_excel(r'MERGE_SHP.xlsx', index=False)
+
+    oms_off = pd.read_excel('MERGE_SHP.xlsx')
+
+    oms_off['MIX'] = ''
+
+    oms_rows = int(len(oms_off))
+
+    for i in range(oms_rows):
+        oms_off.__getitem__('MIX').__setitem__({i}, '=RIGHT(A' + str(i + 2) + ',14)&RIGHT(C' + str(i+2) + ',7)')
 
 
     # im_oms['MIX'] = '=A2&RIGHT(C2,7)'
@@ -122,9 +191,11 @@ def SHOPEE():
 
 
     shopee_file_new = pd.ExcelWriter('MERGE_SHP.xlsx')
-    shp_filter3.to_excel(shopee_file_new, sheet_name='DATA1', merge_cells=False, index=False)
-    shp_col3.to_excel(shopee_file_new, sheet_name='DATA2', merge_cells=False, index=False)
-    im_oms1.to_excel(shopee_file_new, sheet_name='OMS', merge_cells=False, index=False)
+    shp_off1.to_excel(shopee_file_new, sheet_name='DATA1', merge_cells=False, index=False)
+    shp_off2.to_excel(shopee_file_new, sheet_name='DATA2', merge_cells=False, index=False)
+    # shp_col3.to_excel(shopee_file_new, sheet_name='DATA2', merge_cells=False, index=False)
+    oms_off.to_excel(shopee_file_new, sheet_name='OMS', merge_cells=False, index=False)
+    # im_oms1.to_excel(shopee_file_new, sheet_name='OMS', merge_cells=False, index=False)
     # shp_report.to_excel(shopee_file_new, sheet_name='G drive from sheet', merge_cells=False, index=False)
     shp_ws_fil.to_excel(shopee_file_new, sheet_name='G drive from sheet', merge_cells=False, index=False)
     mtr_file.to_excel(shopee_file_new, sheet_name='Masterlist', merge_cells=False, index=False)
@@ -371,10 +442,10 @@ def Filo():
 
 
 #
-# SHOPEE()
-MIRAKL()
-LAZADA()
-JD()
+SHOPEE()
+# MIRAKL()
+# LAZADA()
+# JD()
 # Filo()
 
 
