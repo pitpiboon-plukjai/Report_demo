@@ -27,6 +27,8 @@ mrk_df1 = pd.read_excel(mrk_file, 'orders')
 laz_file = 'LAZ.xlsx'
 laz_df1 = pd.read_excel(laz_file, 'Sheet2')
 
+# laz_df1 = pd.read_excel(laz_file, 'ALLDATA')
+
 #JD------------------------------------------------------------------
 
 
@@ -305,7 +307,7 @@ def LAZADA():
     for i in range(all_row):
         laz_off.__getitem__('7F').__setitem__({i}, '=RIGHT(A' + str(i + 2) + ',7)')
         laz_off.__getitem__('Merge J & BP').__setitem__({i}, '=C' + str(i + 2) + '&G' + str(i + 2))
-        laz_off.__getitem__('OMS').__setitem__({i}, '=VLOOKUP(H:H,OMS!F:F,1,0)')
+        laz_off.__getitem__('OMS').__setitem__({i}, '=VLOOKUP(K:K,OMS!F:F,1,0)')
         laz_off.__getitem__('Laz').__setitem__({i}, '="LAZ"&C' + str(i + 2))
         laz_off.__getitem__('G Drive 7').__setitem__({i}, "=VLOOKUP(J:J,'G drive from sheet'!B:B,1,0)")
         laz_off.__getitem__('CONFIG').__setitem__({i}, "=VLOOKUP($G" + str(i + 2) + ',Masterlist!B:G,2,0)')
