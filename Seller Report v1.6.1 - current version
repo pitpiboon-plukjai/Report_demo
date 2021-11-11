@@ -85,7 +85,7 @@ def SHOPEE():
     shp_off1['SKU'] = ''
     shp_off1['ORDERSKU'] = ''
     shp_off1['OMS'] = ''
-    shp_off1['SHP ORDER'] = '="SHP"&A2'
+    shp_off1['SHP ORDER'] = ''
     shp_off1['G Drive'] = " "
     shp_off1['CONFIG'] = ""
     shp_off1['SBC'] = ""
@@ -135,13 +135,14 @@ def SHOPEE():
     shp_off2['SKU'] = ''
     shp_off2['ORDERSKU'] = ''
     shp_off2['OMS'] = ''
-    shp_off2['SHP ORDER'] = '="SHP"&A2'
-    shp_off2['G Drive'] = "=VLOOKUP(M:M,'G drive from sheet'!B:B,1,0)"
-    shp_off2['CONFIG'] = "=VLOOKUP($J2,Masterlist!B:G,2,0)"
-    shp_off2['SBC'] = "=TEXT(VLOOKUP($J2,Masterlist!B:G,3,0),0)"
-    shp_off2['COLOR'] = "=VLOOKUP($J2,Masterlist!B:G,4,0)"
-    shp_off2['SIZE'] = "=VLOOKUP($J2,Masterlist!B:G,5,0)"
-    shp_off2['FULLPRICE'] = "=VLOOKUP($J2,Masterlist!B:G,6,0)"
+    shp_off2['SHP ORDER'] = ''
+    shp_off2['G Drive'] = ""
+    shp_off2['CONFIG'] = ""
+    shp_off2['SBC'] = ""
+    shp_off2['COLOR'] = ""
+    shp_off2['SIZE'] = ""
+    shp_off2['FULLPRICE'] = ""
+    shp_off2['LOCATION'] = ""
 
     all_row2 = int(len(shp_off2))
 
@@ -149,7 +150,7 @@ def SHOPEE():
         shp_off2.__getitem__('SKU').__setitem__({i}, '=RIGHT(D' + str(i + 2) + ',7)')
         shp_off2.__getitem__('ORDERSKU').__setitem__({i}, '=A' + str(i + 2) + '&J' + str(i + 2))
         shp_off2.__getitem__('OMS').__setitem__({i}, "=VLOOKUP(K:K,OMS!F:F,1,0)")
-        shp_off2.__getitem__('SHP ORDER').__setitem__({i}, '=SHP&A' + str(i + 2))
+        shp_off2.__getitem__('SHP ORDER').__setitem__({i}, '="SHP"&A' + str(i + 2))
         shp_off2.__getitem__('G Drive').__setitem__({i}, "=VLOOKUP(M:M,'G drive from sheet'!B:B,1,0)")
         shp_off2.__getitem__('CONFIG').__setitem__({i}, '=VLOOKUP($J' + str(i + 2) + ',Masterlist!B:G,2,0)')
         shp_off2.__getitem__('SBC').__setitem__({i}, '=TEXT(VLOOKUP($J' + str(i + 2) + ',Masterlist!B:G,3,0),0)')
@@ -229,6 +230,7 @@ def MIRAKL():
     mrk_off['COLOR'] = ""
     mrk_off['SIZE'] = ""
     mrk_off['SKU FOR LOCATION'] = ''
+    mrk_off['LOCATION'] = ""
 
     all_row = int(len(mrk_off))
 
@@ -302,6 +304,7 @@ def LAZADA():
     laz_off['SIZE'] = ""
     laz_off['FULLPRICE'] = ""
     laz_off['SKU FOR LOCATION'] = ''
+    laz_off['LOCATION'] = ''
 
 
     all_row = int(len(laz_off))
@@ -317,7 +320,7 @@ def LAZADA():
         laz_off.__getitem__('COLOR').__setitem__({i}, "=VLOOKUP($G" + str(i + 2) + ',Masterlist!B:G,4,0)')
         laz_off.__getitem__('SIZE').__setitem__({i}, "=VLOOKUP($G" + str(i + 2) + ',Masterlist!B:G,5,0)')
         laz_off.__getitem__('FULLPRICE').__setitem__({i}, "=VLOOKUP($G" + str(i + 2) + ',Masterlist!B:G,6,0)')
-        laz_off.__getitem__('SKU FOR LOCATION').__setitem__({i}, '=L' + str(i + 2) + '&G' + str(i + 2))
+        laz_off.__getitem__('SKU FOR LOCATION').__setitem__({i}, '=L' + str(i + 2) + '&"-"&G' + str(i + 2))
 
     laz_ws_fil = laz_report.loc[:, ('Unnamed: 1', 'Lazada.1')]
     # im_oms['MIX'] = '=MID(A2,4,15)&RIGHT(C2,7)'
@@ -375,15 +378,16 @@ def JD():
     jd_off = pd.read_excel('MERGE_JD.xlsx')
 
     jd_off['SKU'] = ''
-    jd_off['ORDERSKU'] = '=A2&J2'
+    jd_off['ORDERSKU'] = ''
     jd_off['OMS'] = ""
-    jd_off['JD ORDER'] = '="JD"&A2'
+    jd_off['JD ORDER'] = '="'
     jd_off['G Drive'] = " "
     jd_off['CONFIG'] = " "
     jd_off['SBC'] = "= "
     jd_off['COLOR'] = " "
     jd_off['SIZE'] = " "
     jd_off['FULLPRICE'] = " "
+    jd_off['LOCATION'] = " "
 
     all_rows = int(len(jd_off))
 
@@ -411,7 +415,7 @@ def JD():
 
     oms_off = pd.read_excel('MERGE_JD.xlsx')
 
-    oms_off['MIX'] = '=RIGHT(A2,8)&RIGHT(C2,7)'
+    oms_off['MIX'] = ''
 
     oms_rows = int(len(oms_off))
 
@@ -447,10 +451,10 @@ def Filo():
 
 #
 SHOPEE()
-# MIRAKL()
-# LAZADA()
-# JD()
-# Filo()
+MIRAKL()
+LAZADA()
+JD()
+Filo()
 
 
 print('Compile Successfully!')
