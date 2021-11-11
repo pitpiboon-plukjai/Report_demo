@@ -148,6 +148,8 @@ def SHOPEE():
     for i in range(all_row2):
         shp_off2.__getitem__('SKU').__setitem__({i}, '=RIGHT(D' + str(i + 2) + ',7)')
         shp_off2.__getitem__('ORDERSKU').__setitem__({i}, '=A' + str(i + 2) + '&J' + str(i + 2))
+        shp_off2.__getitem__('OMS').__setitem__({i}, "=VLOOKUP(K:K,OMS!F:F,1,0)")
+        shp_off2.__getitem__('SHP ORDER').__setitem__({i}, '=SHP&A' + str(i + 2))
         shp_off2.__getitem__('G Drive').__setitem__({i}, "=VLOOKUP(M:M,'G drive from sheet'!B:B,1,0)")
         shp_off2.__getitem__('CONFIG').__setitem__({i}, '=VLOOKUP($J' + str(i + 2) + ',Masterlist!B:G,2,0)')
         shp_off2.__getitem__('SBC').__setitem__({i}, '=TEXT(VLOOKUP($J' + str(i + 2) + ',Masterlist!B:G,3,0),0)')
@@ -445,14 +447,13 @@ def Filo():
 
 #
 SHOPEE()
-MIRAKL()
-LAZADA()
-JD()
-Filo()
+# MIRAKL()
+# LAZADA()
+# JD()
+# Filo()
 
 
 print('Compile Successfully!')
-
 
 
 
