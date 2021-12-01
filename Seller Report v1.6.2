@@ -9,11 +9,11 @@ warnings.simplefilter(action="ignore", category=SettingWithCopyWarning)
 
 shp_file = 'SHP.xlsx'
 
-shp_df1 = pd.read_excel(shp_file, 'DATA1')
-shp_df2 = pd.read_excel(shp_file, 'DATA2')
+# shp_df1 = pd.read_excel(shp_file, 'DATA1')
+# shp_df2 = pd.read_excel(shp_file, 'DATA2')
 
-# shp_df1 = pd.read_excel(shp_file, 'G1')
-# shp_df2 = pd.read_excel(shp_file, 'G2')
+shp_df1 = pd.read_excel(shp_file, 'G1')
+shp_df2 = pd.read_excel(shp_file, 'G2')
 
 
 #Mirakl------------------------------------------------------------------
@@ -25,9 +25,13 @@ mrk_df1 = pd.read_excel(mrk_file, 'orders')
 
 
 laz_file = 'LAZ.xlsx'
-laz_df1 = pd.read_excel(laz_file, 'Sheet2')
+# laz_df1 = pd.read_excel(laz_file, 'Sheet2')
 
 # laz_df1 = pd.read_excel(laz_file, 'ALLDATA')
+
+laz_df1 = pd.read_excel(laz_file, '23-29 Nov')
+
+# laz_df1 = pd.read_excel(laz_file, 'DATA1')
 
 #JD------------------------------------------------------------------
 
@@ -229,6 +233,7 @@ def MIRAKL():
 
     mrk_off['MRK ORDER'] = ''
     mrk_off['OMS'] = ''
+    mrk_off['G DRIVE'] = ''
     mrk_off['CONFIG'] = ""
     mrk_off['SBC'] = ""
     mrk_off['COLOR'] = ""
@@ -242,11 +247,12 @@ def MIRAKL():
 
         mrk_off.__getitem__('MRK ORDER').__setitem__({i}, '=LEFT(B' + str(i + 2)+',20)')
         mrk_off.__getitem__('OMS').__setitem__({i}, '=VLOOKUP(I:I,OMS!F:F,1,0)')
+        mrk_off.__getitem__('G DRIVE').__setitem__({i}, "=VLOOKUP(I:I,'G drive from sheet'!B:B,1,0)")
         mrk_off.__getitem__('CONFIG').__setitem__({i}, '=VLOOKUP($F' + str(i + 2) + ',Masterlist!B:G,2,0)')
         mrk_off.__getitem__('SBC').__setitem__({i}, '=TEXT(VLOOKUP($F' + str(i + 2) + ',Masterlist!B:G,3,0),0)')
         mrk_off.__getitem__('COLOR').__setitem__({i}, '=VLOOKUP($F' + str(i + 2) + ',Masterlist!B:G,4,0)')
         mrk_off.__getitem__('SIZE').__setitem__({i}, '=VLOOKUP($F' + str(i + 2) + ',Masterlist!B:G,5,0)')
-        mrk_off.__getitem__('SKU FOR LOCATION').__setitem__({i}, '=K' + str(i + 2) + '&"-"&F'+ str(i + 2))
+        mrk_off.__getitem__('SKU FOR LOCATION').__setitem__({i}, '=L' + str(i + 2) + '&"-"&F'+ str(i + 2))
 
 
     mrk_ws_fil = mrk_report.loc[:, ('Unnamed: 1', 'mirakl.1')]
@@ -456,12 +462,11 @@ def Filo():
 
 
 #
-# SHOPEE()
-# MIRAKL()
-# LAZADA()
+SHOPEE()
+MIRAKL()
+LAZADA()
 JD()
 # Filo()
-
 
 print('Compile Successfully!')
 
