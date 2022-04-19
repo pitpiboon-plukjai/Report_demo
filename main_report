@@ -35,7 +35,8 @@ print("Lord Earth !!! give me open Lazada")
 laz_file = 'LAZ.xlsx'
 # laz_df1 = pd.read_excel(laz_file, 'Sheet2')
 
-laz_df1 = pd.read_excel(laz_file, 'ALLDATA')
+# laz_df1 = pd.read_excel(laz_file, 'ALLDATA')
+laz_df1 = pd.read_excel(laz_file)
 
 # laz_df1 = pd.read_excel(laz_file, 'LAZ_Jan05')
 
@@ -436,9 +437,10 @@ def MIRAKL():
     all_row = int(len(mrk_off))
 
     for i in range(all_row):
-        mrk_off.__getitem__('MRK ORDER').__setitem__({i}, '=LEFT(B' + str(i + 2) + ',20)')
+        # mrk_off.__getitem__('MRK ORDER').__setitem__({i}, '=LEFT(B' + str(i + 2) + ',20)')
+        mrk_off.__getitem__('MRK ORDER').__setitem__({i}, '=SUBSTITUTE(B' + str(i + 2) + ',"-A","")')
         mrk_off.__getitem__('OMS').__setitem__({i}, '=VLOOKUP(I:I,OMS!F:F,1,0)')
-        mrk_off.__getitem__('G DRIVE').__setitem__({i}, "=VLOOKUP(I:I,'G drive from sheet'!B:B,1,0)")
+        mrk_off.__getitem__('G DRIVE').__setitem__({i}, "=VLOOKUP(B:B,'G drive from sheet'!B:B,1,0)")
         mrk_off.__getitem__('CONFIG').__setitem__({i}, '=VLOOKUP($F' + str(i + 2) + ',Masterlist!B:G,2,0)')
         mrk_off.__getitem__('SBC').__setitem__({i}, '=TEXT(VLOOKUP($F' + str(i + 2) + ',Masterlist!B:G,3,0),0)')
         mrk_off.__getitem__('COLOR').__setitem__({i}, '=VLOOKUP($F' + str(i + 2) + ',Masterlist!B:G,4,0)')
